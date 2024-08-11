@@ -42,7 +42,7 @@ strong {
 #post-button {
   background-color: #20272b;
   padding: 0.5rem 1.5rem 0.5rem 1.5rem;
-  border-radius: 20%;
+  border-radius: 1rem;
   color: white;
 }
 
@@ -64,15 +64,17 @@ strong {
 
 form {
   color: #eef1ec;
-  background-color: #20272b;
+  background-color: #343f46;
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   input {
-    background-color: #343f46;
+    background-color: #20272b;
     border: 0px;
     padding: 0.5rem;
+    border-radius: 1rem;
+    color: #eef1ec;
   }
   flex: 1;
   gap: 10px;
