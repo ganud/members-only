@@ -12,7 +12,12 @@ exports.user_create_post = [
   body("username", "Username must not be empty.")
     .trim()
     .isLength({ min: 1 })
-    .escape(),
+    .escape()
+    .custom(async (value: string, { req }: any) => {
+      if (await db.findUser(value)) {
+        throw new Error("Username already in use");
+      }
+    }),
   body("first_name", "First name must not be empty.")
     .trim()
     .isLength({ min: 1 })
@@ -25,16 +30,14 @@ exports.user_create_post = [
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("confirm_password", "Password must not be empty.")
+  body("confirm_password", "Confirm password must not be empty.")
     .trim()
     .isLength({ min: 1 })
-    .escape(),
-  check("password").custom((value: string, { req }: any) => {
-    if (value !== req.body.confirm_password) {
-      throw new Error("Password confirmation is incorrect");
-    }
-    return;
-  }),
+    .escape()
+    .custom((value: string, { req }: any) => {
+      return value === req.body.password;
+    })
+    .withMessage("Confirm field does not match password"),
   // Process request with sanitized data
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     // Extract the validation errors from a request.
@@ -43,7 +46,7 @@ exports.user_create_post = [
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/error messages.
       res.render("user_signup_form", {
-        errors: errors.array(),
+        errors: errors.array({ onlyFirstError: true }),
       });
     } else {
       // Data from form is valid. Save category.
