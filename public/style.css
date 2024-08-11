@@ -1,0 +1,87 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  background-color: #343f46;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+a {
+  color: blue;
+  text-decoration: none; /* no underline */
+}
+
+strong {
+  color: #eef1ec;
+}
+
+.flex-row, .login-buttons {
+  display: flex;
+}
+
+.flex-col, .input-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.5rem;
+  min-height: 10vh;
+  padding: 0px 5vw 0px 5vw;
+}
+
+.login-buttons {
+  gap: 10px;
+  align-items: center;
+}
+
+#post-button, .account-button {
+  background-color: #20272b;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  border-radius: 20%;
+  color: white;
+}
+
+.messages {
+  flex: 1;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(15vw, 100%), 1fr));
+  padding: 1rem;
+}
+
+.message {
+  color: rgb(180, 181, 192);
+  height: 200px;
+  background-color: #20272b;
+  border-radius: 1rem;
+  padding: 0.5rem;
+}
+
+form {
+  color: #eef1ec;
+  background-color: #20272b;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  gap: 10px;
+}
+form input {
+  background-color: #343f46;
+  border: 0px;
+  padding: 0.5rem;
+}
+
+.input-field {
+  gap: 5px;
+  align-items: center;
+}/*# sourceMappingURL=style.css.map */

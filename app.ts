@@ -7,6 +7,8 @@ const path = require("path");
 const pgSession = require("connect-pg-simple")(session);
 const pool = require("./db/pool");
 const indexRouter = require("./routes/indexRouter");
+const userRouter = require("./routes/userRouter");
+
 require("dotenv").config();
 
 // Create the Express application
@@ -14,6 +16,8 @@ var app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, "public")));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
@@ -32,4 +36,6 @@ app.use(
 );
 
 app.use("/", indexRouter);
+app.use("/", userRouter);
+
 app.listen(3000, () => console.log("app listening on port 3000!"));
