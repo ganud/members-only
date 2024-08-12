@@ -28,7 +28,7 @@
       <% if (messages !== false) { %> <% messages.map((message) => { %>
       <div class="message">
         <div class="message-user">
-          <a href=/<%= message.id %>><strong><%= message.title %></strong></a> by <% if (user) {%>
+          <a href=/delete/<%= message.id %>><strong><%= message.title %></strong></a> by <% if (user) {%>
           <strong><%= message.username %></strong> <% } else { %> Anon <%}%>
         </div>
         <div class="message-content"><%= message.message %></div>
