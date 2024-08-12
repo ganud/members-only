@@ -16,23 +16,24 @@
         <a href="/login"><strong>Log In</strong></a>
         <%}%>
         <a href="/sign-up"><strong>Sign Up</strong></a>
-        <button id="post-button"><strong>Post</strong></button>
+        <% if (user) {%>
+        <a href="/new-message"
+          ><button id="post-button"><strong>Post</strong></button></a
+        >
+        <% } %>
       </div>
     </div>
     <hr />
     <div class="messages">
+      <% if (messages !== false) { %> <% messages.map((message) => { %>
       <div class="message">
-        <div class="message-user"><strong>Anon</strong></div>
-        <div class="message-content">My days are numbered.</div>
+        <div class="message-user">
+          <strong><%= message.title %></strong> by <% if (user) {%>
+          <strong><%= message.username %></strong> <% } else { %> Anon <%}%>
+        </div>
+        <div class="message-content"><%= message.message %></div>
       </div>
-      <div class="message">
-        <div class="message-user"><strong>Anon</strong></div>
-        <div class="message-content">My days are numbered.</div>
-      </div>
-      <div class="message">
-        <div class="message-user"><strong>Anon</strong></div>
-        <div class="message-content">My days are numbered.</div>
-      </div>
+      <% }) %> <% } %>
     </div>
   </body>
 </html>

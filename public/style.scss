@@ -89,3 +89,12 @@ form {
 .account-button {
   @extend #post-button;
 }
+
+#message {
+  background-color: #20272b;
+  color: #eef1ec;
+  min-width: 20vw;
+  min-height: 15vh;
+  resize: none;
+  border: 0px;
+}

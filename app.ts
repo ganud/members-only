@@ -1,11 +1,7 @@
-var bcrypt = require("bcryptjs");
 const express = require("express");
-import { Request, Response, NextFunction } from "express";
 import { DoneCallback } from "passport";
-const db = require("./db/queries");
 const session = require("express-session");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 const path = require("path");
 const pgSession = require("connect-pg-simple")(session);
 const pool = require("./db/pool");

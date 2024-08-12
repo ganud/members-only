@@ -19,11 +19,13 @@ strong {
   color: #eef1ec;
 }
 
-.flex-row, .login-buttons {
+.flex-row,
+.login-buttons {
   display: flex;
 }
 
-.flex-col, .input-field {
+.flex-col,
+.input-field {
   display: flex;
   flex-direction: column;
 }
@@ -42,7 +44,8 @@ strong {
   align-items: center;
 }
 
-#post-button, .account-button {
+#post-button,
+.account-button {
   background-color: #20272b;
   padding: 0.5rem 1.5rem 0.5rem 1.5rem;
   border-radius: 1rem;
@@ -86,4 +89,13 @@ form input {
 .input-field {
   gap: 5px;
   align-items: center;
-}/*# sourceMappingURL=style.css.map */
+}
+
+#message {
+  background-color: #20272b;
+  color: #eef1ec;
+  min-width: 20vw;
+  min-height: 15vh;
+  resize: none;
+  border: 0px;
+} /*# sourceMappingURL=style.css.map */

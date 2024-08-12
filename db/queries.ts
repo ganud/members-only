@@ -21,11 +21,24 @@ async function findUser(username: string) {
   return user;
 }
 
+async function addMessage(title: string, message: string, author: number) {
+  await pool.query(
+    "INSERT INTO messages (title, message, author) VALUES ($1, $2, $3)",
+    [title, message, author]
+  );
+  return;
+}
+
+async function getMessages() {
+  const messages = await pool.query(
+    "SELECT * FROM messages JOIN users ON users.id = author ORDER BY date DESC"
+  );
+  return messages.rows;
+}
+
 module.exports = {
   addUser,
   findUser,
+  addMessage,
+  getMessages,
 };
-
-async function main() {
-  console.log(await findUser("hades"));
-}
