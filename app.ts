@@ -11,34 +11,13 @@ const pgSession = require("connect-pg-simple")(session);
 const pool = require("./db/pool");
 const indexRouter = require("./routes/indexRouter");
 const userRouter = require("./routes/userRouter");
-
+const { strategy } = require("./localstrategy");
 require("dotenv").config();
 
 // Create the Express application
 var app = express();
 
-passport.use(
-  new LocalStrategy(
-    async (username: string, password: string, done: DoneCallback) => {
-      try {
-        const user = await db.findUser(username);
-
-        if (!user) {
-          return done(null, false, { message: "Incorrect username" });
-        }
-        // Compare password hash
-        const match = await bcrypt.compare(password, user.password);
-        if (!match) {
-          // passwords do not match!
-          return done(null, false, { message: "Incorrect password" });
-        }
-        return done(null, user);
-      } catch (err) {
-        return done(err);
-      }
-    }
-  )
-);
+passport.use(strategy);
 
 passport.serializeUser((user: any, done: DoneCallback) => {
   done(null, user.id);
@@ -81,23 +60,5 @@ app.use(
 app.use(passport.session());
 app.use("/", indexRouter);
 app.use("/", userRouter);
-
-app.post(
-  "/login",
-  passport.authenticate("local", { failureRedirect: "/login" }),
-  function (req: Request, res: Response) {
-    res.redirect("/");
-  }
-);
-
-app.get("/log-out", (req: Request, res: Response, next: NextFunction) => {
-  req.logout((err: Error) => {
-    if (err) {
-      return next(err);
-    } else {
-      res.redirect("/");
-    }
-  });
-});
 
 app.listen(3000, () => console.log("app listening on port 3000!"));

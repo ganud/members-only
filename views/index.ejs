@@ -8,15 +8,13 @@
   </head>
   <body>
     <div class="header">
-      <% if (user) {%>
-      <h1>WELCOME BACK <%= user.username %></h1>
-      <a href="/log-out">LOG OUT</a>
-      <% } else { %>
-      <h1>please log in</h1>
-      <%}%>
       <a href="/"><strong>Members Only</strong></a>
       <div class="login-buttons">
+        <% if (user) {%>
+        <a href="/log-out"><strong>Log Out</strong></a>
+        <% } else { %>
         <a href="/login"><strong>Log In</strong></a>
+        <%}%>
         <a href="/sign-up"><strong>Sign Up</strong></a>
         <button id="post-button"><strong>Post</strong></button>
       </div>

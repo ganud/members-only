@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult, check } = require("express-validator");
 var bcrypt = require("bcryptjs");
 const passport = require("passport");
+const { strategy } = require("../localstrategy");
 
 // Render the user signup form on GET
 exports.user_create_get = asyncHandler(async (req: Request, res: Response) => {
@@ -75,4 +76,21 @@ exports.user_create_post = [
 // Render the user login form on GET
 exports.user_login_get = asyncHandler(async (req: Request, res: Response) => {
   res.render("user_login_form");
+});
+
+exports.user_login = asyncHandler(async (req: Request, res: Response) => {
+  passport.authenticate("local", {
+    failureRedirect: "/login",
+    successRedirect: "/",
+  })(req, res);
+});
+
+exports.user_logout = asyncHandler(async (req: Request, res: Response) => {
+  req.logout((err: Error) => {
+    if (err) {
+      return next(err);
+    } else {
+      res.redirect("/");
+    }
+  });
 });
