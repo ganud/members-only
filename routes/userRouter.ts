@@ -16,4 +16,8 @@ router.get("/new-message", userController.message_create_get);
 
 router.post("/new-message", userController.message_create_post);
 
+router.get("/:id", userController.message_delete_get);
+
+router.post("/:id", userController.message_delete_post);
+
 module.exports = router;

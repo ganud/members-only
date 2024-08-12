@@ -31,9 +31,14 @@ async function addMessage(title: string, message: string, author: number) {
 
 async function getMessages() {
   const messages = await pool.query(
-    "SELECT * FROM messages JOIN users ON users.id = author ORDER BY date DESC"
+    "SELECT messages.id, title, message, username FROM messages JOIN users ON users.id = author ORDER BY date DESC"
   );
   return messages.rows;
+}
+
+async function deleteMessage(id: number) {
+  await pool.query("DELETE FROM messages WHERE id = $1", [id]);
+  return;
 }
 
 module.exports = {
@@ -41,4 +46,5 @@ module.exports = {
   findUser,
   addMessage,
   getMessages,
+  deleteMessage,
 };

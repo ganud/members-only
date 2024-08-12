@@ -5,7 +5,7 @@ const passport = require("passport");
 const path = require("path");
 const pgSession = require("connect-pg-simple")(session);
 const pool = require("./db/pool");
-const indexRouter = require("./routes/indexRouter");
+const messageRouter = require("./routes/messageRouter");
 const userRouter = require("./routes/userRouter");
 const { strategy } = require("./localstrategy");
 require("dotenv").config();
@@ -54,7 +54,14 @@ app.use(
 );
 
 app.use(passport.session());
-app.use("/", indexRouter);
+app.use("/", messageRouter);
 app.use("/", userRouter);
 
 app.listen(3000, () => console.log("app listening on port 3000!"));
+declare global {
+  namespace Express {
+    interface User {
+      id: string;
+    }
+  }
+}
