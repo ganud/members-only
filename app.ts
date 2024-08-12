@@ -1,6 +1,7 @@
 var bcrypt = require("bcryptjs");
 const express = require("express");
 import { Request, Response, NextFunction } from "express";
+import { DoneCallback } from "passport";
 const db = require("./db/queries");
 const session = require("express-session");
 const passport = require("passport");
@@ -17,31 +18,33 @@ require("dotenv").config();
 var app = express();
 
 passport.use(
-  new LocalStrategy(async (username, password, done) => {
-    try {
-      const user = await db.findUser(username);
+  new LocalStrategy(
+    async (username: string, password: string, done: DoneCallback) => {
+      try {
+        const user = await db.findUser(username);
 
-      if (!user) {
-        return done(null, false, { message: "Incorrect username" });
+        if (!user) {
+          return done(null, false, { message: "Incorrect username" });
+        }
+        // Compare password hash
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+          // passwords do not match!
+          return done(null, false, { message: "Incorrect password" });
+        }
+        return done(null, user);
+      } catch (err) {
+        return done(err);
       }
-      // Compare password hash
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        // passwords do not match!
-        return done(null, false, { message: "Incorrect password" });
-      }
-      return done(null, user);
-    } catch (err) {
-      return done(err);
     }
-  })
+  )
 );
 
-passport.serializeUser((user, done) => {
+passport.serializeUser((user: any, done: DoneCallback) => {
   done(null, user.id);
 });
 
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async (id: number, done: DoneCallback) => {
   try {
     const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [
       id,
@@ -62,27 +65,37 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 // Session setup
-app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
+app.use(
+  session({
+    store: new pgSession({
+      pool: pool, // Connection pool
+      tableName: "user_sessions",
+    }),
+    secret: process.env.FOO_COOKIE_SECRET,
+    resave: false,
+    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
+    saveUninitialized: true,
+  })
+);
 
 app.use(passport.session());
-
-app.use(passport.session());
-
 app.use("/", indexRouter);
 app.use("/", userRouter);
 
 app.post(
   "/login",
   passport.authenticate("local", { failureRedirect: "/login" }),
-  function (req, res) {
+  function (req: Request, res: Response) {
     res.redirect("/");
   }
 );
 
-app.get("/log-out", (req, res, next) => {
-  req.logout((err) => {
+app.get("/log-out", (req: Request, res: Response, next: NextFunction) => {
+  req.logout((err: Error) => {
     if (err) {
       return next(err);
+    } else {
+      res.redirect("/");
     }
   });
 });
