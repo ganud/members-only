@@ -1,7 +1,7 @@
-const express = require("express");
+import express = require("express");
 import { DoneCallback } from "passport";
 const session = require("express-session");
-const passport = require("passport");
+import passport = require("passport");
 const path = require("path");
 const pgSession = require("connect-pg-simple")(session);
 const pool = require("./db/pool");
@@ -12,7 +12,6 @@ require("dotenv").config();
 
 // Create the Express application
 var app = express();
-
 passport.use(strategy);
 
 passport.serializeUser((user: any, done: DoneCallback) => {
